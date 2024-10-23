@@ -182,7 +182,7 @@ public:
         y_origin_ = global_grid_cols_ / 2;
         
 
-        std::string image_path = "/home/redha/colcon_ws/src/btn/tasks/emptyseats.png";
+        std::string image_path = "/home/redha/colcon_ws/src/btn/tasks/dishup.png";
         RCLCPP_INFO(this->get_logger(), "%s", image_path.c_str());
         image = cv::imread(image_path.c_str(), cv::IMREAD_GRAYSCALE);
         if (image.empty()) {
@@ -211,10 +211,10 @@ public:
         cv::copyMakeBorder(resized_image, padded_image, top, bottom, left, right, cv::BORDER_CONSTANT, cv::Scalar(0));
 
         // Set goals
-        goals.push_back(std::make_tuple(199, 85, "front_seats"));
+        goals.push_back(std::make_tuple(199, 90, "front_seats"));
         goals.push_back(std::make_tuple(130, 119, "table_1"));
         // goals.push_back(std::make_tuple(124, 119, "table"));
-        goals.push_back(std::make_tuple(119, 85, "behind_seats"));
+        goals.push_back(std::make_tuple(119, 90, "behind_seats"));
         // goals.push_back(std::make_tuple(119, 112, "table_left"));
         goals.push_back(std::make_tuple(100, 100, "end_point"));
     }
@@ -227,14 +227,9 @@ public:
     void keypressed_callback(const std_msgs::msg::Bool::SharedPtr msg)
     {
         if (!msg->data){
-            if (current_state == "front_seats"){
-                resetOdomWithPose(3.5, -0.85, 0.0, 0.0, 0.0, 0.0);
-                current_state = "table_1";
-            }
             key_press_counter++;
             if (key_press_counter == 2) {
                 resetOdomWithPose(4.0, -0.65, 0.0, 0.0, 0.0, 1.57);
-                current_state = "table_2";
             }
         }
     }
@@ -297,6 +292,7 @@ public:
         // Call the service asynchronously
         auto result = odom_reset_pose_client_->async_send_request(request);
 
+        current_state = "table_2";
 
         // key_pressed = true;
 
@@ -393,8 +389,8 @@ void odomCallback(const nav_msgs::msg::Odometry::SharedPtr msg) {
             // message.data = true;
             // publisher_->publish(message);
             task_audio_feedback = false;
-            system("espeak \"Click!\"");
-            RCLCPP_INFO(this->get_logger(), "Click!");
+            system("espeak \"Ready!\"");
+            RCLCPP_INFO(this->get_logger(), "Ready!");
             return;
         } else {
             system("espeak \"Reached!\"");
@@ -430,6 +426,8 @@ void odomCallback(const nav_msgs::msg::Odometry::SharedPtr msg) {
         double angle_pilot = current_yaw_ * (180.0 / M_PI) + 90;
 
         double x = angle_path - angle_pilot;
+
+        RCLCPP_INFO(this->get_logger(), "%f", angle_path);
 
 
         bool audio_feedback = true;  // Set this to true to enable audio feedback
