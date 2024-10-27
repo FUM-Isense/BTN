@@ -475,13 +475,13 @@ void odomCallback(const nav_msgs::msg::Odometry::SharedPtr msg) {
     //     // rgbGrid.at<cv::Vec3b>(unchanged_goal.first, unchanged_goal.second) = cv::Vec3b(255, 0, 0); // goal position
     // } 
 
-    // Resize the grid from 200x200 to 800x800 for better visualization
-    cv::Mat enlargedGrid;
-    cv::resize(rgbGrid, enlargedGrid, cv::Size(800, 800), 0, 0, cv::INTER_NEAREST);  // Resize using nearest neighbor interpolation
+    // // Resize the grid from 200x200 to 800x800 for better visualization
+    // cv::Mat enlargedGrid;
+    // cv::resize(rgbGrid, enlargedGrid, cv::Size(800, 800), 0, 0, cv::INTER_NEAREST);  // Resize using nearest neighbor interpolation
     
-    // Display the enlarged RGB matrix with path visualization
-    cv::imshow("Enlarged Confidence Matrix in RGB", enlargedGrid);
-    if (cv::waitKey(1) == 27) return;  // Exit on ESC key
+    // // Display the enlarged RGB matrix with path visualization
+    // cv::imshow("Enlarged Confidence Matrix in RGB", enlargedGrid);
+    // if (cv::waitKey(1) == 27) return;  // Exit on ESC key
 }
 
 
